@@ -888,7 +888,12 @@ void GameState::LoadCurrentSettingsFromProfile( PlayerNumber pn )
 		 * set it off. However, don't reset modifiers that aren't saved by the
 		 * profile, so we don't ignore unsaved modifiers when a profile is in use. */
 		PO_GROUP_CALL( m_pPlayerState[pn]->m_PlayerOptions, ModsLevel_Preferred, ResetSavedPrefs );
+		LOG->Info("[MODS] Applying profile default modifiers for P%i: '%s'", pn+1, sModifiers.c_str());
 		ApplyPreferredModifiers( pn, sModifiers );
+	}
+	else
+	{
+		LOG->Info("[MODS] No profile default modifiers found for P%i; using prefs/theme defaults", pn+1);
 	}
 	// Only set the sort order if it wasn't already set by a GameCommand (or by an earlier profile)
 	if( m_PreferredSortOrder == SortOrder_Invalid  &&  pProfile->m_SortOrder != SortOrder_Invalid )
@@ -916,6 +921,7 @@ void GameState::SaveCurrentSettingsToProfile( PlayerNumber pn )
 	Profile* pProfile = PROFILEMAN->GetProfile(pn);
 
 	pProfile->SetDefaultModifiers( m_pCurGame, m_pPlayerState[pn]->m_PlayerOptions.GetPreferred().GetSavedPrefsString() );
+	LOG->Info("[MODS] Saved preferred modifiers for P%i to profile: '%s'", pn+1, m_pPlayerState[pn]->m_PlayerOptions.GetPreferred().GetSavedPrefsString().c_str());
 	if( IsSongSort(m_PreferredSortOrder) )
 		pProfile->m_SortOrder = m_PreferredSortOrder;
 	if( m_PreferredDifficulty[pn] != Difficulty_Invalid )
@@ -1889,7 +1895,9 @@ void GameState::GetDefaultPlayerOptions( PlayerOptions &po )
 {
 	po.Init();
 	po.FromString( PREFSMAN->m_sDefaultModifiers );
+	LOG->Info("[MODS] Applied preference default modifiers '%s' to player options", PREFSMAN->m_sDefaultModifiers.Get().c_str());
 	po.FromString( CommonMetrics::DEFAULT_MODIFIERS );
+	LOG->Info("[MODS] Applied theme default modifiers '%s' to player options", CommonMetrics::DEFAULT_MODIFIERS.GetValue().c_str());
 	if( po.m_sNoteSkin.empty() )
 		po.m_sNoteSkin = CommonMetrics::DEFAULT_NOTESKIN_NAME;
 }
@@ -1898,7 +1906,9 @@ void GameState::GetDefaultSongOptions( SongOptions &so )
 {
 	so.Init();
 	so.FromString( PREFSMAN->m_sDefaultModifiers );
+	LOG->Info("[MODS] Applied preference default modifiers '%s' to song options", PREFSMAN->m_sDefaultModifiers.Get().c_str());
 	so.FromString( CommonMetrics::DEFAULT_MODIFIERS );
+	LOG->Info("[MODS] Applied theme default modifiers '%s' to song options", CommonMetrics::DEFAULT_MODIFIERS.GetValue().c_str());
 }
 
 void GameState::ResetToDefaultSongOptions( ModsLevel l )
@@ -1912,12 +1922,14 @@ void GameState::ApplyPreferredModifiers( PlayerNumber pn, RString sModifiers )
 {
 	m_pPlayerState[pn]->m_PlayerOptions.FromString( ModsLevel_Preferred, sModifiers );
 	m_SongOptions.FromString( ModsLevel_Preferred, sModifiers );
+	LOG->Info("[MODS] Applied preferred modifiers for P%i: \"%s\"", pn+1, sModifiers.c_str());
 }
 
 void GameState::ApplyStageModifiers( PlayerNumber pn, RString sModifiers )
 {
 	m_pPlayerState[pn]->m_PlayerOptions.FromString( ModsLevel_Stage, sModifiers );
 	m_SongOptions.FromString( ModsLevel_Stage, sModifiers );
+	LOG->Info("[MODS] Applied stage modifiers for P%i: \"%s\"", pn+1, sModifiers.c_str());
 }
 
 void GameState::ClearStageModifiersIllegalForCourse()

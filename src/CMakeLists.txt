@@ -536,6 +536,10 @@ install(DIRECTORY "${SM_ROOT_DIR}/NoteSkins"
 install(FILES "${SM_ROOT_DIR}/Songs/instructions.txt"
         DESTINATION "${SM_INSTALL_DESTINATION}/Songs")
 
+# Ensure no pre-existing save data (such as an old MachineProfile) is packaged
+# with release builds so the game starts with a clean profile.
+install(CODE "file(REMOVE_RECURSE \"${CMAKE_INSTALL_PREFIX}/${SM_INSTALL_DESTINATION}/Save\")")
+
 if(WITH_CLUB_FANTASTIC)
   # Fetch ClubFantastic packs
   include(FetchContent)
