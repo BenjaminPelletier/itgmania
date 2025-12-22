@@ -366,12 +366,14 @@ PrefsManager::~PrefsManager()
 void PrefsManager::SetCurrentGame( const RString &sGame )
 {
 	if( m_sCurrentGame.Get() == sGame )
-		return;	// redundant
+		return; // redundant
 
 	if( !m_sCurrentGame.Get().empty() )
 		StoreGamePrefs();
 
 	m_sCurrentGame.Set( sGame );
+
+	LOG->Info("[MODS] Switching to game '%s' and restoring its preferences", sGame.c_str());
 
 	RestoreGamePrefs();
 }
@@ -397,12 +399,14 @@ void PrefsManager::RestoreGamePrefs()
 	if( iter != m_mapGameNameToGamePrefs.end() )
 		gp = iter->second;
 
-	m_sAnnouncer		.Set( gp.m_sAnnouncer );
-	m_sTheme		.Set( gp.m_sTheme );
+	m_sAnnouncer			.Set( gp.m_sAnnouncer );
+	m_sTheme			.Set( gp.m_sTheme );
 	m_sDefaultModifiers	.Set( gp.m_sDefaultModifiers );
+	LOG->Info("[MODS] Restored game prefs for '%s' with default modifiers '%s'", m_sCurrentGame.Get().c_str(), gp.m_sDefaultModifiers.c_str());
 
 	// give Static.ini a chance to clobber the saved game prefs
 	ReadPrefsFromFile( SpecialFiles::STATIC_INI_PATH, GetPreferencesSection(), true );
+	LOG->Info("[MODS] After applying Static.ini for '%s', default modifiers are '%s'", m_sCurrentGame.Get().c_str(), m_sDefaultModifiers.Get().c_str());
 }
 
 PrefsManager::GamePrefs::GamePrefs() : m_sAnnouncer(""), m_sTheme(SpecialFiles::BASE_THEME_NAME), m_sDefaultModifiers("") {}
@@ -417,6 +421,7 @@ void PrefsManager::ReadPrefsFromDisk()
 	ReadPrefsFromFile( SpecialFiles::STATIC_INI_PATH, GetPreferencesSection(), true );
 
 	TranslateDeprecatedFlags();
+	LOG->Info("[MODS] Loaded default modifiers from disk: '%s'", m_sDefaultModifiers.Get().c_str());
 
 	if( !m_sCurrentGame.Get().empty() )
 		RestoreGamePrefs();
@@ -490,8 +495,9 @@ void PrefsManager::ReadGamePrefsFromIni( const RString &sIni )
 
 		// todo: read more prefs here? -aj
 		ini.GetValue(section_name, "Announcer",		gp.m_sAnnouncer);
-		ini.GetValue(section_name, "Theme",		gp.m_sTheme);
+		ini.GetValue(section_name, "Theme",			gp.m_sTheme);
 		ini.GetValue(section_name, "DefaultModifiers",	gp.m_sDefaultModifiers);
+		LOG->Info("[MODS] Read game prefs from %s for '%s': default modifiers '%s'", sIni.c_str(), sGame.c_str(), gp.m_sDefaultModifiers.c_str());
 	}
 }
 
