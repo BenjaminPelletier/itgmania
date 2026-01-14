@@ -122,6 +122,51 @@ The **Windows SDK** is also required, so click the _Individual components_ secti
 
 Confirm the installation. Once everything is installed, you can open **StepMania.sln** with Visual Studio. Set the build type to **Release** and press the hollow green button (or Ctrl+F5) to begin building.
 
+##### Windows (Visual Studio) - Full build and run walkthrough
+
+1. **Clone and initialize submodules** (required).
+
+   ```sh
+   git clone https://github.com/itgmania/itgmania.git
+   cd itgmania
+   git submodule update --init --recursive
+   ```
+
+2. **Install prerequisites**.
+
+   In the Visual Studio Installer, ensure you have:
+   - **Desktop development with C++** workload.
+   - A **Windows SDK** selected under "Individual components."
+   - **CMake** installed (either through Visual Studio Installer components or separately).
+
+3. **Generate the Visual Studio solution with CMake**.
+
+   From the repository root, create a build directory and run CMake with a Visual Studio generator:
+
+   ```sh
+   cmake -S . -B Build -G "Visual Studio 17 2022" -A x64
+   cmake --build Build --config Release
+   ```
+
+   If you are using a different Visual Studio version, replace the generator name with the one listed in `cmake --help` (for example, "Visual Studio 16 2019").
+
+4. **Open the solution in Visual Studio**.
+
+   Open `Build/StepMania.sln`. In Visual Studio:
+   - Set the configuration to **Release** (or **Debug** if you are doing engine development).
+   - Select **x64** as the platform.
+   - Build the solution (Build → Build Solution).
+
+5. **Run ITGmania from Visual Studio**.
+
+   In Solution Explorer, right-click the `StepMania` project and select **Set as Startup Project**.
+   Press **Ctrl+F5** to run without debugging or **F5** to run with the debugger attached.
+
+6. **Find the built executable**.
+
+   The executable is placed in `/Program`.
+   You can launch it directly from that folder, and it will use the repository's data folders (Themes, Songs, etc.).
+
 ![image](https://github.com/user-attachments/assets/f9235e14-bfc8-4f8f-8b30-9706dfb3bcc6)
 
 #### macOS
