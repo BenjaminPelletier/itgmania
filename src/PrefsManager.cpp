@@ -26,6 +26,15 @@ XToString( MusicWheelUsesSections );
 StringToX( MusicWheelUsesSections );
 LuaXType( MusicWheelUsesSections );
 
+static const char *InitialSongSelectionNames[] = {
+	"FirstAvailable",
+	"Portal",
+	"Random",
+};
+XToString( InitialSongSelection );
+StringToX( InitialSongSelection );
+LuaXType( InitialSongSelection );
+
 static const char *AllowW1Names[] = {
 	"Never",
 	"CoursesOnly",
@@ -221,6 +230,7 @@ PrefsManager::PrefsManager() :
 	m_iArcadeOptionsNavigation	( "ArcadeOptionsNavigation",	0 ),
 	m_ThreeKeyNavigation		( "ThreeKeyNavigation",		false ),
 	m_MusicWheelUsesSections	( "MusicWheelUsesSections",	MusicWheelUsesSections_ALWAYS ),
+	m_InitialSongSelection		( "InitialSongSelection",	InitialSongSelection_FirstAvailable ),
 	m_iMusicWheelSwitchSpeed	( "MusicWheelSwitchSpeed",	15 ),
 	m_AllowW1			( "AllowW1",			ALLOW_W1_EVERYWHERE ),
 	m_bEventMode			( "EventMode",			true ),

@@ -22,6 +22,14 @@ enum MusicWheelUsesSections
 	NUM_MusicWheelUsesSections,
 	MusicWheelUsesSections_Invalid
 };
+enum InitialSongSelection
+{
+	InitialSongSelection_FirstAvailable,
+	InitialSongSelection_Portal,
+	InitialSongSelection_Random,
+	NUM_InitialSongSelection,
+	InitialSongSelection_Invalid
+};
 /** @brief The options for allowing the W1 timing. */
 enum AllowW1
 {
@@ -225,6 +233,7 @@ public:
 	Preference<int>	m_iArcadeOptionsNavigation;
 	Preference<bool>	m_ThreeKeyNavigation;
 	Preference<MusicWheelUsesSections>		m_MusicWheelUsesSections;
+	Preference<InitialSongSelection>		m_InitialSongSelection;
 	Preference<int>	m_iMusicWheelSwitchSpeed;
 	Preference<AllowW1>	m_AllowW1; // this should almost always be on, given use cases. -aj
 	Preference<bool>	m_bEventMode;

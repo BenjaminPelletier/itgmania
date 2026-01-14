@@ -210,6 +210,29 @@ void MusicWheel::BeginScreen()
 		SetOpenSection("");
 	}
 
+	switch( PREFSMAN->m_InitialSongSelection )
+	{
+		case InitialSongSelection_Portal:
+			for( unsigned i = 0; i < m_CurWheelItemData.size(); ++i )
+			{
+				if( m_CurWheelItemData[i]->m_Type == WheelItemDataType_Portal )
+				{
+					m_iSelection = i;
+					break;
+				}
+			}
+			break;
+		case InitialSongSelection_Random:
+		{
+			Song *pSong = GetPreferredSelectionForRandomOrPortal();
+			if( pSong != nullptr )
+				SelectSong( pSong );
+			break;
+		}
+		default:
+			break;
+	}
+
 	if( REMIND_WHEEL_POSITIONS && HIDE_INACTIVE_SECTIONS )
 	{
 		// store the group song index, run this also here because it forgets the current position when
@@ -872,7 +895,7 @@ void MusicWheel::BuildWheelItemDatas( std::vector<MusicWheelItemData *> &arrayWh
 				if( SHOW_RANDOM && bFoundAnySong )
 					arrayWheelItemDatas.push_back( new MusicWheelItemData(WheelItemDataType_Random, nullptr, "", nullptr, nullptr, RANDOM_COLOR, 0) );
 
-				if( SHOW_PORTAL && bFoundAnySong )
+				if( (SHOW_PORTAL || PREFSMAN->m_InitialSongSelection == InitialSongSelection_Portal) && bFoundAnySong )
 					arrayWheelItemDatas.push_back( new MusicWheelItemData(WheelItemDataType_Portal, nullptr, "", nullptr, nullptr, PORTAL_COLOR, 0) );
 
 				// add custom wheel items
