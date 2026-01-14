@@ -790,6 +790,7 @@ static void InitializeConfOptions()
 	ADD( ConfOption( "ShowInstructions",		MovePref<bool>,		"Skip","Show") );
 	ADD( ConfOption( "ShowCaution",			MovePref<bool>,		"Skip","Show") );
 	ADD( ConfOption( "MusicWheelUsesSections",	MovePref<MusicWheelUsesSections>, "Never","Always","Title Only") );
+	ADD( ConfOption( "InitialSongSelection",	MovePref<InitialSongSelection>, "First Available", "Portal", "Random") );
 	ADD( ConfOption( "CourseSortOrder",		MovePref<CourseSortOrders>, "Num Songs","Average Feet","Total Feet","Ranking") );
 	ADD( ConfOption( "MoveRandomToEnd",		MovePref<bool>,		"No","Yes") );
 	ADD( ConfOption( "ShowNativeLanguage",		MovePref<bool>,		"Romanization","Native Language") );
