@@ -164,7 +164,7 @@ Confirm the installation. Once everything is installed, you can open **StepMania
 
 6. **Find the built executable**.
 
-   The executable is placed in `Build/Program/Release/` (or `Build/Program/Debug/` if you built Debug).
+   The executable is placed in `/Program`.
    You can launch it directly from that folder, and it will use the repository's data folders (Themes, Songs, etc.).
 
 ![image](https://github.com/user-attachments/assets/f9235e14-bfc8-4f8f-8b30-9706dfb3bcc6)
